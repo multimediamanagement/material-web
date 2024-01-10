@@ -94,6 +94,7 @@ $_checkmark-bottom-left: 7px, -14px;
   }
 
   md-focus-ring {
+    display: none;
     height: 44px;
     inset: unset;
     width: 44px;
@@ -144,6 +145,14 @@ $_checkmark-bottom-left: 7px, -14px;
     border-style: solid;
     border-width: var(--_outline-width);
     box-sizing: border-box;
+
+    &:after {
+      content: '';
+      display: none;
+      position: absolute;
+      inset: 0;
+      background-color: #0066B30D;
+    }
   }
 
   .background {
@@ -181,6 +190,7 @@ $_checkmark-bottom-left: 7px, -14px;
   // Ripple
 
   md-ripple {
+    display: none;
     border-radius: var(--_state-layer-shape);
     height: var(--_state-layer-size);
     inset: unset;
@@ -327,8 +337,12 @@ $_checkmark-bottom-left: 7px, -14px;
   // States
 
   :where(:hover) .outline {
-    border-color: var(--_hover-outline-color);
-    border-width: var(--_hover-outline-width);
+    //border-color: var(--_hover-outline-color);
+    //border-width: var(--_hover-outline-width);
+
+    &:after {
+      display: block;
+    }
   }
 
   :where(:hover) .background {
@@ -340,12 +354,11 @@ $_checkmark-bottom-left: 7px, -14px;
   }
 
   :where(:focus-within) .outline {
-    border-color: var(--_focus-outline-color);
-    border-width: var(--_focus-outline-width);
+    box-shadow: 0 0 0 .125rem #FFF, 0 0 0 .25rem  var(--_focus-outline-color);
   }
 
   :where(:focus-within) .background {
-    background: var(--_selected-focus-container-color);
+    //background: var(--_selected-focus-container-color);
   }
 
   :where(:focus-within) .icon {

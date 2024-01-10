@@ -155,7 +155,6 @@ export class Checkbox extends checkboxBaseClass {
           .checked=${this.checked}
           @input=${this.handleInput}
           @change=${this.handleChange} />
-
         <div class="outline"></div>
         <div class="background"></div>
         <md-focus-ring part="focus-ring" for="input"></md-focus-ring>
