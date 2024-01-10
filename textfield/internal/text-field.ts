@@ -4,24 +4,29 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {LitElement, PropertyValues, html, nothing} from 'lit';
-import {property, query, queryAssignedElements, state} from 'lit/decorators.js';
-import {classMap} from 'lit/directives/class-map.js';
-import {live} from 'lit/directives/live.js';
-import {StyleInfo, styleMap} from 'lit/directives/style-map.js';
-import {StaticValue, html as staticHtml} from 'lit/static-html.js';
+import { LitElement, PropertyValues, html, nothing } from 'lit';
+import {
+  property,
+  query,
+  queryAssignedElements,
+  state,
+} from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { live } from 'lit/directives/live.js';
+import { StyleInfo, styleMap } from 'lit/directives/style-map.js';
+import { StaticValue, html as staticHtml } from 'lit/static-html.js';
 
-import {Field} from '../../field/internal/field.js';
-import {ARIAMixinStrict} from '../../internal/aria/aria.js';
-import {requestUpdateOnAriaChange} from '../../internal/aria/delegate.js';
-import {stringConverter} from '../../internal/controller/string-converter.js';
-import {redispatchEvent} from '../../internal/events/redispatch-event.js';
+import { Field } from '../../field/internal/field.js';
+import { ARIAMixinStrict } from '../../internal/aria/aria.js';
+import { requestUpdateOnAriaChange } from '../../internal/aria/delegate.js';
+import { stringConverter } from '../../internal/controller/string-converter.js';
+import { redispatchEvent } from '../../internal/events/redispatch-event.js';
 import {
   createValidator,
   getValidityAnchor,
   mixinConstraintValidation,
 } from '../../labs/behaviors/constraint-validation.js';
-import {mixinElementInternals} from '../../labs/behaviors/element-internals.js';
+import { mixinElementInternals } from '../../labs/behaviors/element-internals.js';
 import {
   getFormValue,
   mixinFormAssociated,
@@ -30,8 +35,8 @@ import {
   mixinOnReportValidity,
   onReportValidity,
 } from '../../labs/behaviors/on-report-validity.js';
-import {TextFieldValidator} from '../../labs/behaviors/validators/text-field-validator.js';
-import {Validator} from '../../labs/behaviors/validators/validator.js';
+import { TextFieldValidator } from '../../labs/behaviors/validators/text-field-validator.js';
+import { Validator } from '../../labs/behaviors/validators/validator.js';
 
 /**
  * Input types that are compatible with the text field.
@@ -74,8 +79,8 @@ export type InvalidTextFieldType =
 // Separate variable needed for closure.
 const textFieldBaseClass = mixinOnReportValidity(
   mixinConstraintValidation(
-    mixinFormAssociated(mixinElementInternals(LitElement)),
-  ),
+    mixinFormAssociated(mixinElementInternals(LitElement))
+  )
 );
 
 /**
@@ -108,7 +113,7 @@ export abstract class TextField extends textFieldBaseClass {
    * This error state overrides the error state controlled by
    * `reportValidity()`.
    */
-  @property({type: Boolean, reflect: true}) error = false;
+  @property({ type: Boolean, reflect: true }) error = false;
 
   /**
    * The error message that replaces supporting text when `error` is true. If
@@ -118,7 +123,7 @@ export abstract class TextField extends textFieldBaseClass {
    * This error message overrides the error message displayed by
    * `reportValidity()`.
    */
-  @property({attribute: 'error-text'}) errorText = '';
+  @property({ attribute: 'error-text' }) errorText = '';
 
   /**
    * The floating Material label of the textfield component. It informs the user
@@ -140,7 +145,7 @@ export abstract class TextField extends textFieldBaseClass {
    *
    * https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/required
    */
-  @property({type: Boolean, reflect: true}) required = false;
+  @property({ type: Boolean, reflect: true }) required = false;
 
   /**
    * The current value of the text field. It is always a string.
@@ -150,51 +155,57 @@ export abstract class TextField extends textFieldBaseClass {
   /**
    * An optional prefix to display before the input value.
    */
-  @property({attribute: 'prefix-text'}) prefixText = '';
+  @property({ attribute: 'prefix-text' }) prefixText = '';
 
   /**
    * An optional suffix to display after the input value.
    */
-  @property({attribute: 'suffix-text'}) suffixText = '';
+  @property({ attribute: 'suffix-text' }) suffixText = '';
 
   /**
    * Whether or not the text field has a leading icon. Used for SSR.
    */
-  @property({type: Boolean, attribute: 'has-leading-icon'})
+  @property({ type: Boolean, attribute: 'has-leading-icon' })
   hasLeadingIcon = false;
 
   /**
    * Whether or not the text field has a trailing icon. Used for SSR.
    */
-  @property({type: Boolean, attribute: 'has-trailing-icon'})
+  @property({ type: Boolean, attribute: 'has-trailing-icon' })
   hasTrailingIcon = false;
+
+  /**
+   * Whether or not the text field has a trailing icon. Used for SSR.
+   */
+  @property({ type: Boolean, attribute: 'has-supporting-icon' })
+  hasSupportingIcon = false;
 
   /**
    * Conveys additional information below the text field, such as how it should
    * be used.
    */
-  @property({attribute: 'supporting-text'}) supportingText = '';
+  @property({ attribute: 'supporting-text' }) supportingText = '';
 
   /**
    * Override the input text CSS `direction`. Useful for RTL languages that use
    * LTR notation for fractions.
    */
-  @property({attribute: 'text-direction'}) textDirection = '';
+  @property({ attribute: 'text-direction' }) textDirection = '';
 
   /**
    * The number of rows to display for a `type="textarea"` text field.
    * Defaults to 2.
    */
-  @property({type: Number}) rows = 2;
+  @property({ type: Number }) rows = 2;
 
   /**
    * The number of cols to display for a `type="textarea"` text field.
    * Defaults to 20.
    */
-  @property({type: Number}) cols = 20;
+  @property({ type: Number }) cols = 20;
 
   // <input> properties
-  @property({reflect: true}) override inputMode = '';
+  @property({ reflect: true }) override inputMode = '';
 
   /**
    * Defines the greatest value in the range of permitted values.
@@ -209,7 +220,7 @@ export abstract class TextField extends textFieldBaseClass {
    *
    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#maxlength
    */
-  @property({type: Number}) maxLength = -1;
+  @property({ type: Number }) maxLength = -1;
 
   /**
    * Defines the most negative value in the range of permitted values.
@@ -224,7 +235,7 @@ export abstract class TextField extends textFieldBaseClass {
    *
    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#minlength
    */
-  @property({type: Number}) minLength = -1;
+  @property({ type: Number }) minLength = -1;
 
   /**
    * A regular expression that the text field's value must match to pass
@@ -242,7 +253,7 @@ export abstract class TextField extends textFieldBaseClass {
    *
    * https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/placeholder
    */
-  @property({reflect: true, converter: stringConverter}) placeholder = '';
+  @property({ reflect: true, converter: stringConverter }) placeholder = '';
 
   /**
    * Indicates whether or not a user should be able to edit the text field's
@@ -250,14 +261,14 @@ export abstract class TextField extends textFieldBaseClass {
    *
    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#readonly
    */
-  @property({type: Boolean, reflect: true}) readOnly = false;
+  @property({ type: Boolean, reflect: true }) readOnly = false;
 
   /**
    * Indicates that input accepts multiple email addresses.
    *
    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#multiple
    */
-  @property({type: Boolean, reflect: true}) multiple = false;
+  @property({ type: Boolean, reflect: true }) multiple = false;
 
   /**
    * Gets or sets the direction in which selection occurred.
@@ -316,7 +327,7 @@ export abstract class TextField extends textFieldBaseClass {
    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types
    * for more details on each input type.
    */
-  @property({reflect: true})
+  @property({ reflect: true })
   type: TextFieldType | UnsupportedTextFieldType = 'text';
 
   /**
@@ -325,7 +336,7 @@ export abstract class TextField extends textFieldBaseClass {
    *
    * https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
    */
-  @property({reflect: true}) autocomplete = '';
+  @property({ reflect: true }) autocomplete = '';
 
   /**
    * The text field's value as a number.
@@ -397,10 +408,12 @@ export abstract class TextField extends textFieldBaseClass {
     | HTMLTextAreaElement
     | null;
   @query('.field') private readonly field!: Field | null;
-  @queryAssignedElements({slot: 'leading-icon'})
+  @queryAssignedElements({ slot: 'leading-icon' })
   private readonly leadingIcons!: Element[];
-  @queryAssignedElements({slot: 'trailing-icon'})
+  @queryAssignedElements({ slot: 'trailing-icon' })
   private readonly trailingIcons!: Element[];
+  @queryAssignedElements({ slot: 'supporting-icon' })
+  private readonly supportingIcons!: Element[];
 
   /**
    * Selects all the text in the text field.
@@ -421,13 +434,13 @@ export abstract class TextField extends textFieldBaseClass {
     replacement: string,
     start: number,
     end: number,
-    selectionMode?: SelectionMode,
+    selectionMode?: SelectionMode
   ): void;
   setRangeText(...args: unknown[]) {
     // Calling setRangeText with 1 vs 3-4 arguments has different behavior.
     // Use spread syntax and type casting to ensure correct usage.
     this.getInputOrTextarea().setRangeText(
-      ...(args as Parameters<HTMLInputElement['setRangeText']>),
+      ...(args as Parameters<HTMLInputElement['setRangeText']>)
     );
     this.value = this.getInputOrTextarea().value;
   }
@@ -444,7 +457,7 @@ export abstract class TextField extends textFieldBaseClass {
   setSelectionRange(
     start: number | null,
     end: number | null,
-    direction?: 'forward' | 'backward' | 'none',
+    direction?: 'forward' | 'backward' | 'none'
   ) {
     this.getInputOrTextarea().setSelectionRange(start, end, direction);
   }
@@ -498,7 +511,7 @@ export abstract class TextField extends textFieldBaseClass {
   override attributeChangedCallback(
     attribute: string,
     newValue: string | null,
-    oldValue: string | null,
+    oldValue: string | null
   ) {
     if (attribute === 'value' && this.dirty) {
       // After user input, changing the value attribute no longer updates the
@@ -511,9 +524,9 @@ export abstract class TextField extends textFieldBaseClass {
 
   protected override render() {
     const classes = {
-      'disabled': this.disabled,
-      'error': !this.disabled && this.hasError,
-      'textarea': this.type === 'textarea',
+      disabled: this.disabled,
+      error: !this.disabled && this.hasError,
+      textarea: this.type === 'textarea',
     };
 
     return html`
@@ -547,6 +560,7 @@ export abstract class TextField extends textFieldBaseClass {
       ?focused=${this.focused}
       ?has-end=${this.hasTrailingIcon}
       ?has-start=${this.hasLeadingIcon}
+      ?has-supporting=${this.hasSupportingIcon}
       label=${this.label}
       max=${this.maxLength}
       ?populated=${!!this.value}
@@ -557,6 +571,7 @@ export abstract class TextField extends textFieldBaseClass {
       ${this.renderLeadingIcon()}
       ${this.renderInputOrTextarea()}
       ${this.renderTrailingIcon()}
+      ${this.renderSupportingIcon()}
       <div id="description" slot="aria-describedby"></div>
     </${this.fieldTag}>`;
   }
@@ -577,8 +592,19 @@ export abstract class TextField extends textFieldBaseClass {
     `;
   }
 
+  private renderSupportingIcon() {
+    return html`
+      <span class="icon supporting" slot="supporting-icon">
+        <slot
+          name="supporting-icon"
+          @slotchange=${this.handleIconChange}
+        ></slot>
+      </span>
+    `;
+  }
+
   private renderInputOrTextarea() {
-    const style: StyleInfo = {'direction': this.textDirection};
+    const style: StyleInfo = { direction: this.textDirection };
     const ariaLabel =
       (this as ARIAMixinStrict).ariaLabel || this.label || nothing;
     // lit-anaylzer `autocomplete` types are too strict
@@ -607,7 +633,8 @@ export abstract class TextField extends textFieldBaseClass {
           @focusin=${this.handleFocusin}
           @focusout=${this.handleFocusout}
           @input=${this.handleInput}
-          @select=${this.redispatchEvent}></textarea>
+          @select=${this.redispatchEvent}
+        ></textarea>
       `;
     }
 
@@ -646,7 +673,8 @@ export abstract class TextField extends textFieldBaseClass {
           @focusin=${this.handleFocusin}
           @focusout=${this.handleFocusout}
           @input=${this.handleInput}
-          @select=${this.redispatchEvent} />
+          @select=${this.redispatchEvent}
+        />
         ${suffix}
       </div>
     `;
@@ -666,8 +694,8 @@ export abstract class TextField extends textFieldBaseClass {
     }
 
     const classes = {
-      'suffix': isSuffix,
-      'prefix': !isSuffix,
+      suffix: isSuffix,
+      prefix: !isSuffix,
     };
 
     return html`<span class="${classMap(classes)}">${text}</span>`;
@@ -726,6 +754,7 @@ export abstract class TextField extends textFieldBaseClass {
   private handleIconChange() {
     this.hasLeadingIcon = this.leadingIcons.length > 0;
     this.hasTrailingIcon = this.trailingIcons.length > 0;
+    this.hasSupportingIcon = this.supportingIcons.length > 0;
   }
 
   // Writable mixin properties for lit-html binding, needed for lit-analyzer

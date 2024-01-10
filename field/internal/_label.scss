@@ -33,11 +33,12 @@
       // is not easy to maintain the user's label text selection.
       pointer-events: none;
       position: absolute;
+      display: flex;
+      align-items: center;
     }
 
     .label.resting {
-      position: absolute;
-      top: var(--_top-space);
+      position: relative;
     }
 
     .label.floating {

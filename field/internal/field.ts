@@ -12,38 +12,49 @@ import {
   render,
   TemplateResult,
 } from 'lit';
-import {property, query, queryAssignedElements, state} from 'lit/decorators.js';
-import {classMap} from 'lit/directives/class-map.js';
+import {
+  property,
+  query,
+  queryAssignedElements,
+  state,
+} from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
 
-import {EASING} from '../../internal/motion/animation.js';
+import { EASING } from '../../internal/motion/animation.js';
 
 /**
  * A field component.
  */
 export class Field extends LitElement {
-  @property({type: Boolean}) disabled = false;
-  @property({type: Boolean}) error = false;
-  @property({type: Boolean}) focused = false;
+  @property({ type: Boolean }) disabled = false;
+  @property({ type: Boolean }) error = false;
+  @property({ type: Boolean }) focused = false;
   @property() label = '';
-  @property({type: Boolean}) populated = false;
-  @property({type: Boolean}) required = false;
-  @property({type: Boolean}) resizable = false;
-  @property({attribute: 'supporting-text'}) supportingText = '';
-  @property({attribute: 'error-text'}) errorText = '';
-  @property({type: Number}) count = -1;
-  @property({type: Number}) max = -1;
+  @property({ type: Boolean }) populated = false;
+  @property({ type: Boolean }) required = false;
+  @property({ type: Boolean }) resizable = false;
+  @property({ attribute: 'supporting-text' }) supportingText = '';
+  @property({ attribute: 'error-text' }) errorText = '';
+  @property({ type: Number }) count = -1;
+  @property({ type: Number }) max = -1;
 
   /**
    * Whether or not the field has leading content.
    */
-  @property({type: Boolean, attribute: 'has-start'}) hasStart = false;
+  @property({ type: Boolean, attribute: 'has-start' }) hasStart = false;
 
   /**
    * Whether or not the field has trailing content.
    */
-  @property({type: Boolean, attribute: 'has-end'}) hasEnd = false;
+  @property({ type: Boolean, attribute: 'has-end' }) hasEnd = false;
 
-  @queryAssignedElements({slot: 'aria-describedby'})
+  /**
+   * Whether or not the field has supporting content.
+   */
+  @property({ type: Boolean, attribute: 'has-supporting' }) hasSupporting =
+    false;
+
+  @queryAssignedElements({ slot: 'aria-describedby' })
   private readonly slottedAriaDescribedBy!: HTMLElement[];
 
   private get counterText() {
@@ -111,15 +122,16 @@ export class Field extends LitElement {
     const restingLabel = this.renderLabel(/*isFloating*/ false);
     const outline = this.renderOutline?.(floatingLabel);
     const classes = {
-      'disabled': this.disabled,
+      disabled: this.disabled,
       'disable-transitions': this.disableTransitions,
-      'error': this.error && !this.disabled,
-      'focused': this.focused,
+      error: this.error && !this.disabled,
+      focused: this.focused,
       'with-start': this.hasStart,
       'with-end': this.hasEnd,
-      'populated': this.populated,
-      'resizable': this.resizable,
-      'required': this.required,
+      'with-supporting': this.hasSupporting,
+      populated: this.populated,
+      resizable: this.resizable,
+      required: this.required,
       'no-label': !this.label,
     };
 
@@ -179,14 +191,18 @@ export class Field extends LitElement {
   protected renderOutline?(floatingLabel: unknown): TemplateResult;
 
   private renderSupportingText() {
-    const {supportingOrErrorText, counterText} = this;
+    const { supportingOrErrorText, counterText } = this;
     if (!supportingOrErrorText && !counterText) {
       return nothing;
     }
 
+    const icon = html`<slot name="supporting-icon" aria-hidden="true"></slot>`;
+
     // Always render the supporting text span so that our `space-around`
     // container puts the counter at the end.
-    const start = html`<span>${supportingOrErrorText}</span>`;
+    const start = html`<span class="supporting-text-container"
+      >${icon}${supportingOrErrorText}</span
+    >`;
     // Conditionally render counter so we don't render the extra `gap`.
     // TODO(b/244473435): add aria-label and announcements
     const end = counterText
@@ -204,7 +220,8 @@ export class Field extends LitElement {
       <div class="supporting-text" role=${role}>${start}${end}</div>
       <slot
         name="aria-describedby"
-        @slotchange=${this.updateSlottedAriaDescribedBy}></slot>
+        @slotchange=${this.updateSlottedAriaDescribedBy}
+      ></slot>
     `;
   }
 
@@ -231,9 +248,9 @@ export class Field extends LitElement {
     }
 
     const classes = {
-      'hidden': !visible,
-      'floating': isFloating,
-      'resting': !isFloating,
+      hidden: !visible,
+      floating: isFloating,
+      resting: !isFloating,
     };
 
     // Add '*' if a label is present and the field is required
@@ -282,7 +299,7 @@ export class Field extends LitElement {
     // TODO(b/241113345): use animation tokens
     this.labelAnimation = this.floatingLabelEl?.animate(
       this.getLabelKeyframes(),
-      {duration: 150, easing: EASING.STANDARD},
+      { duration: 150, easing: EASING.STANDARD }
     );
 
     this.labelAnimation?.addEventListener('finish', () => {
@@ -292,7 +309,7 @@ export class Field extends LitElement {
   }
 
   private getLabelKeyframes() {
-    const {floatingLabelEl, restingLabelEl} = this;
+    const { floatingLabelEl, restingLabelEl } = this;
     if (!floatingLabelEl || !restingLabelEl) {
       return [];
     }
@@ -338,14 +355,14 @@ export class Field extends LitElement {
     const width = isRestingClipped ? `${restingClientWidth / scale}px` : '';
     if (this.focused || this.populated) {
       return [
-        {transform: restTransform, width},
-        {transform: floatTransform, width},
+        { transform: restTransform, width },
+        { transform: floatTransform, width },
       ];
     }
 
     return [
-      {transform: floatTransform, width},
-      {transform: restTransform, width},
+      { transform: floatTransform, width },
+      { transform: restTransform, width },
     ];
   }
 

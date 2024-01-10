@@ -76,8 +76,8 @@ $_md-sys-motion: tokens.md-sys-motion-values();
     }
 
     .outline-start,
-    .outline-panel-inactive,
-    .outline-panel-active,
+    // .outline-panel-inactive,
+    // .outline-panel-active,
     .outline-end {
       // ::before is inactive border, ::after is active border. Borders are
       // absolutely positioned within their elements.
@@ -162,6 +162,7 @@ $_md-sys-motion: tokens.md-sys-motion-values();
     .outline-panel-active {
       border: inherit;
       border-bottom-style: solid;
+      border-top-style: solid;
       inset: 0;
       position: absolute;
 
@@ -232,6 +233,11 @@ $_md-sys-motion: tokens.md-sys-motion-values();
       $shape-start + var(--_outline-label-padding)
     );
     $end-space: max(var(--_trailing-space), $shape-end);
+
+    .with-start .start {
+      padding-top: var(--_top-space);
+      padding-bottom: var(--_bottom-space);
+    }
 
     .outline-start,
     .field:not(.with-start) .content ::slotted(*) {

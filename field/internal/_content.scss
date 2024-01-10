@@ -35,6 +35,8 @@ $_enter-delay: $_label-duration - $_visible-duration;
 
     .start {
       color: var(--_leading-content-color);
+      padding-top: var(--_top-space);
+      padding-top: var(--_bottom-space);
     }
 
     .end {
@@ -47,10 +49,11 @@ $_enter-delay: $_label-duration - $_visible-duration;
       justify-content: center;
     }
 
-    // TODO(b/239188049): remove when layout tokens are ready
-    .with-start .start,
+    .with-start .start {
+      padding-left: var(--_leading-space, 16px);
+    }
     .with-end .end {
-      min-width: 48px;
+      padding-right: var(--_trailing-space, 16px);
     }
 
     .with-start .start {

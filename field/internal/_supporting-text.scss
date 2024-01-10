@@ -19,6 +19,12 @@
       padding-top: var(--_supporting-text-top-space);
     }
 
+    .supporting-text-container {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
     // Don't shrink the counter when the supporting text is long and wraps
     .supporting-text :nth-child(2) {
       flex-shrink: 0;

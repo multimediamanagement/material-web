@@ -28,6 +28,10 @@
     max-width: 100%; // Do not allow field to grow beyond explicitly set width
   }
 
+  .field.error {
+    background-color: var(--md-field-error-background-color, transparent);
+  }
+
   // A separate wrapper is needed around the container for the outline, whose
   // floating label needs overflow: visible. The container itself needs
   // overflow: hidden when resizable.
