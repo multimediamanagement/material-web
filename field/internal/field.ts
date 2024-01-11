@@ -129,6 +129,7 @@ export class Field extends LitElement {
       'with-start': this.hasStart,
       'with-end': this.hasEnd,
       'with-supporting': this.hasSupporting,
+      'with-supporting-text': !!this.supportingText,
       populated: this.populated,
       resizable: this.resizable,
       required: this.required,

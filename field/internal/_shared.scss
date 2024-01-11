@@ -26,6 +26,8 @@
     // structure when languages change.
     writing-mode: horizontal-tb;
     max-width: 100%; // Do not allow field to grow beyond explicitly set width
+    border-radius: var(--md-field-border-radius, unset);
+    background-color: var(--md-field-background-color, transparent);
   }
 
   .field.error {

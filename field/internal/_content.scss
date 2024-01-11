@@ -202,6 +202,20 @@ $_enter-delay: $_label-duration - $_visible-duration;
     .error.focused .end {
       color: var(--_error-focus-trailing-content-color);
     }
+
+    .container:not(.disabled):hover:before {
+      border-radius: var(--md-field-border-radius, 4px);
+      background-color: var(
+        --_content-hover-overlay-color,
+        rgba(0, 102, 179, 0.05)
+      );
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      content: '';
+    }
   }
 
   @layer hcm {
