@@ -6,22 +6,27 @@
 
 import '../../menu/menu.js';
 
-import {html, isServer, LitElement, nothing, PropertyValues} from 'lit';
-import {property, query, queryAssignedElements, state} from 'lit/decorators.js';
-import {ClassInfo, classMap} from 'lit/directives/class-map.js';
-import {styleMap} from 'lit/directives/style-map.js';
-import {html as staticHtml, StaticValue} from 'lit/static-html.js';
+import { html, isServer, LitElement, nothing, PropertyValues } from 'lit';
+import {
+  property,
+  query,
+  queryAssignedElements,
+  state,
+} from 'lit/decorators.js';
+import { ClassInfo, classMap } from 'lit/directives/class-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
+import { html as staticHtml, StaticValue } from 'lit/static-html.js';
 
-import {Field} from '../../field/internal/field.js';
-import {ARIAMixinStrict} from '../../internal/aria/aria.js';
-import {requestUpdateOnAriaChange} from '../../internal/aria/delegate.js';
-import {redispatchEvent} from '../../internal/events/redispatch-event.js';
+import { Field } from '../../field/internal/field.js';
+import { ARIAMixinStrict } from '../../internal/aria/aria.js';
+import { requestUpdateOnAriaChange } from '../../internal/aria/delegate.js';
+import { redispatchEvent } from '../../internal/events/redispatch-event.js';
 import {
   createValidator,
   getValidityAnchor,
   mixinConstraintValidation,
 } from '../../labs/behaviors/constraint-validation.js';
-import {mixinElementInternals} from '../../labs/behaviors/element-internals.js';
+import { mixinElementInternals } from '../../labs/behaviors/element-internals.js';
 import {
   getFormValue,
   mixinFormAssociated,
@@ -30,29 +35,32 @@ import {
   mixinOnReportValidity,
   onReportValidity,
 } from '../../labs/behaviors/on-report-validity.js';
-import {SelectValidator} from '../../labs/behaviors/validators/select-validator.js';
-import {getActiveItem} from '../../list/internal/list-navigation-helpers.js';
+import { SelectValidator } from '../../labs/behaviors/validators/select-validator.js';
+import { getActiveItem } from '../../list/internal/list-navigation-helpers.js';
 import {
   CloseMenuEvent,
   isElementInSubtree,
   isSelectableKey,
 } from '../../menu/internal/controllers/shared.js';
-import {TYPEAHEAD_RECORD} from '../../menu/internal/controllers/typeaheadController.js';
-import {DEFAULT_TYPEAHEAD_BUFFER_TIME, Menu} from '../../menu/internal/menu.js';
-import {SelectOption} from './selectoption/select-option.js';
+import { TYPEAHEAD_RECORD } from '../../menu/internal/controllers/typeaheadController.js';
+import {
+  DEFAULT_TYPEAHEAD_BUFFER_TIME,
+  Menu,
+} from '../../menu/internal/menu.js';
+import { SelectOption } from './selectoption/select-option.js';
 import {
   createRequestDeselectionEvent,
   createRequestSelectionEvent,
 } from './selectoption/selectOptionController.js';
-import {getSelectedItems, SelectOptionRecord} from './shared.js';
+import { getSelectedItems, SelectOptionRecord } from './shared.js';
 
 const VALUE = Symbol('value');
 
 // Separate variable needed for closure.
 const selectBaseClass = mixinOnReportValidity(
   mixinConstraintValidation(
-    mixinFormAssociated(mixinElementInternals(LitElement)),
-  ),
+    mixinFormAssociated(mixinElementInternals(LitElement))
+  )
 );
 
 /**
@@ -83,12 +91,12 @@ export abstract class Select extends selectBaseClass {
   /**
    * Opens the menu synchronously with no animation.
    */
-  @property({type: Boolean}) quick = false;
+  @property({ type: Boolean }) quick = false;
 
   /**
    * Whether or not the select is required.
    */
-  @property({type: Boolean}) required = false;
+  @property({ type: Boolean }) required = false;
 
   /**
    * The error message that replaces supporting text when `error` is true. If
@@ -98,7 +106,7 @@ export abstract class Select extends selectBaseClass {
    * This error message overrides the error message displayed by
    * `reportValidity()`.
    */
-  @property({type: String, attribute: 'error-text'}) errorText = '';
+  @property({ type: String, attribute: 'error-text' }) errorText = '';
 
   /**
    * The floating label for the field.
@@ -109,7 +117,7 @@ export abstract class Select extends selectBaseClass {
    * Conveys additional information below the select, such as how it should
    * be used.
    */
-  @property({type: String, attribute: 'supporting-text'}) supportingText = '';
+  @property({ type: String, attribute: 'supporting-text' }) supportingText = '';
 
   /**
    * Gets or sets whether or not the select is in a visually invalid state.
@@ -117,7 +125,7 @@ export abstract class Select extends selectBaseClass {
    * This error state overrides the error state controlled by
    * `reportValidity()`.
    */
-  @property({type: Boolean, reflect: true}) error = false;
+  @property({ type: Boolean, reflect: true }) error = false;
 
   /**
    * Whether or not the underlying md-menu should be position: fixed to display
@@ -126,38 +134,44 @@ export abstract class Select extends selectBaseClass {
    * position:fixed is useful for cases where select is inside of another
    * element with stacking context and hidden overflows such as `md-dialog`.
    */
-  @property({attribute: 'menu-positioning'})
+  @property({ attribute: 'menu-positioning' })
   menuPositioning: 'absolute' | 'fixed' | 'popover' = 'popover';
 
   /**
    * Clamps the menu-width to the width of the select.
    */
-  @property({type: Boolean, attribute: 'clamp-menu-width'})
+  @property({ type: Boolean, attribute: 'clamp-menu-width' })
   clampMenuWidth = false;
 
   /**
    * The max time between the keystrokes of the typeahead select / menu behavior
    * before it clears the typeahead buffer.
    */
-  @property({type: Number, attribute: 'typeahead-delay'})
+  @property({ type: Number, attribute: 'typeahead-delay' })
   typeaheadDelay = DEFAULT_TYPEAHEAD_BUFFER_TIME;
 
   /**
    * Whether or not the text field has a leading icon. Used for SSR.
    */
-  @property({type: Boolean, attribute: 'has-leading-icon'})
+  @property({ type: Boolean, attribute: 'has-leading-icon' })
   hasLeadingIcon = false;
+
+  /**
+   * Whether or not the text field has a trailing icon. Used for SSR.
+   */
+  @property({ type: Boolean, attribute: 'has-supporting-icon' })
+  hasSupportingIcon = false;
 
   /**
    * Text to display in the field. Only set for SSR.
    */
-  @property({attribute: 'display-text'}) displayText = '';
+  @property({ attribute: 'display-text' }) displayText = '';
 
   /**
    * Whether the menu should be aligned to the start or the end of the select's
    * textbox.
    */
-  @property({attribute: 'menu-align'}) menuAlign: 'start'|'end' = 'start';
+  @property({ attribute: 'menu-align' }) menuAlign: 'start' | 'end' = 'start';
 
   /**
    * The value of the currently selected option.
@@ -190,7 +204,7 @@ export abstract class Select extends selectBaseClass {
    * rather than setting `selectedIndex` setting `selectedIndex` will incur a
    * DOM query.
    */
-  @property({type: Number, attribute: 'selected-index'})
+  @property({ type: Number, attribute: 'selected-index' })
   get selectedIndex(): number {
     // tslint:disable-next-line:enforce-name-casing
     const [_option, index] = (this.getSelectedOptions() ?? [])[0] ?? [];
@@ -251,7 +265,8 @@ export abstract class Select extends selectBaseClass {
   @query('.field') private readonly field!: Field | null;
   @query('md-menu') private readonly menu!: Menu | null;
   @query('#label') private readonly labelEl!: HTMLElement;
-  @queryAssignedElements({slot: 'leading-icon', flatten: true})
+  @query('#field') private readonly fieldEl!: HTMLElement;
+  @queryAssignedElements({ slot: 'leading-icon', flatten: true })
   private readonly leadingIcons!: Element[];
   // Have to keep track of previous open because it's state and private and thus
   // cannot be tracked in PropertyValues<this> map.
@@ -274,7 +289,7 @@ export abstract class Select extends selectBaseClass {
    */
   select(value: string) {
     const optionToSelect = this.options.find(
-      (option) => option.value === value,
+      (option) => option.value === value
     );
     if (optionToSelect) {
       this.selectItem(optionToSelect);
@@ -351,7 +366,8 @@ export abstract class Select extends selectBaseClass {
     return html`
       <span
         class="select ${classMap(this.getRenderClasses())}"
-        @focusout=${this.handleFocusout}>
+        @focusout=${this.handleFocusout}
+      >
         ${this.renderField()} ${this.renderMenu()}
       </span>
     `;
@@ -381,9 +397,9 @@ export abstract class Select extends selectBaseClass {
 
   private getRenderClasses(): ClassInfo {
     return {
-      'disabled': this.disabled,
-      'error': this.error,
-      'open': this.open,
+      disabled: this.disabled,
+      error: this.error,
+      open: this.open,
     };
   }
 
@@ -408,6 +424,7 @@ export abstract class Select extends selectBaseClass {
           .required=${this.required}
           .error=${this.hasError}
           ?has-start=${this.hasLeadingIcon}
+          ?has-supporting=${this.hasSupportingIcon}
           has-end
           supporting-text=${this.supportingText}
           error-text=${this.getErrorText()}
@@ -423,6 +440,7 @@ export abstract class Select extends selectBaseClass {
       this.renderLeadingIcon(),
       this.renderLabel(),
       this.renderTrailingIcon(),
+      this.renderSupportingIcon(),
     ];
   }
 
@@ -443,14 +461,27 @@ export abstract class Select extends selectBaseClass {
               class="down"
               stroke="none"
               fill-rule="evenodd"
-              points="7 10 12 15 17 10"></polygon>
+              points="7 10 12 15 17 10"
+            ></polygon>
             <polygon
               class="up"
               stroke="none"
               fill-rule="evenodd"
-              points="7 15 12 10 17 15"></polygon>
+              points="7 15 12 10 17 15"
+            ></polygon>
           </svg>
         </slot>
+      </span>
+    `;
+  }
+
+  private renderSupportingIcon() {
+    return html`
+      <span class="icon supporting" slot="supporting-icon">
+        <slot
+          name="supporting-icon"
+          @slotchange=${this.handleIconChange}
+        ></slot>
       </span>
     `;
   }
@@ -463,6 +494,11 @@ export abstract class Select extends selectBaseClass {
 
   private renderMenu() {
     const ariaLabel = this.label || (this as ARIAMixinStrict).ariaLabel;
+    const width =
+      this.fieldEl && getComputedStyle
+        ? getComputedStyle(this.fieldEl).width
+        : `${this.selectWidth}px`;
+
     return html`<div class="menu-wrapper">
       <md-menu
         id="listbox"
@@ -472,27 +508,26 @@ export abstract class Select extends selectBaseClass {
         aria-label=${ariaLabel || nothing}
         stay-open-on-focusout
         part="menu"
-        exportparts="focus-ring: menu-focus-ring"
+        exportparts="focus-ring: menu-focus-ring, elevation: menu-elevation"
         anchor="field"
         style=${styleMap({
-          '--__menu-min-width': `${this.selectWidth}px`,
-          '--__menu-max-width': this.clampMenuWidth
-            ? `${this.selectWidth}px`
-            : undefined,
+          '--__menu-min-width': `${width}`,
+          '--__menu-max-width': this.clampMenuWidth ? `${width}px` : undefined,
         })}
         .open=${this.open}
         .quick=${this.quick}
         .positioning=${this.menuPositioning}
         .typeaheadDelay=${this.typeaheadDelay}
-        .anchorCorner=${this.menuAlign === 'start'? 'end-start' : 'end-end'}
-        .menuCorner=${this.menuAlign === 'start'? 'start-start' : 'start-end'}
+        .anchorCorner=${this.menuAlign === 'start' ? 'end-start' : 'end-end'}
+        .menuCorner=${this.menuAlign === 'start' ? 'start-start' : 'start-end'}
         @opening=${this.handleOpening}
         @opened=${this.redispatchEvent}
         @closing=${this.redispatchEvent}
         @closed=${this.handleClosed}
         @close-menu=${this.handleCloseMenu}
         @request-selection=${this.handleRequestSelection}
-        @request-deselection=${this.handleRequestDeselection}>
+        @request-deselection=${this.handleRequestDeselection}
+      >
         ${this.renderMenuContent()}
       </md-menu>
     </div>`;
@@ -533,7 +568,7 @@ export abstract class Select extends selectBaseClass {
       typeaheadController.onKeydown(event);
       event.preventDefault();
 
-      const {lastActiveRecord} = typeaheadController;
+      const { lastActiveRecord } = typeaheadController;
 
       if (!lastActiveRecord) {
         return;
@@ -541,7 +576,7 @@ export abstract class Select extends selectBaseClass {
 
       this.labelEl?.setAttribute?.('aria-live', 'polite');
       const hasChanged = this.selectItem(
-        lastActiveRecord[TYPEAHEAD_RECORD.ITEM] as SelectOption,
+        lastActiveRecord[TYPEAHEAD_RECORD.ITEM] as SelectOption
       );
 
       if (hasChanged) {
@@ -710,14 +745,14 @@ export abstract class Select extends selectBaseClass {
    * property / attribute change.
    */
   private handleRequestSelection(
-    event: ReturnType<typeof createRequestSelectionEvent>,
+    event: ReturnType<typeof createRequestSelectionEvent>
   ) {
     const requestingOptionEl = event.target as SelectOption & HTMLElement;
 
     // No-op if this item is already selected.
     if (
       this.lastSelectedOptionRecords.some(
-        ([option]) => option === requestingOptionEl,
+        ([option]) => option === requestingOptionEl
       )
     ) {
       return;
@@ -731,14 +766,14 @@ export abstract class Select extends selectBaseClass {
    * property / attribute change.
    */
   private handleRequestDeselection(
-    event: ReturnType<typeof createRequestDeselectionEvent>,
+    event: ReturnType<typeof createRequestDeselectionEvent>
   ) {
     const requestingOptionEl = event.target as SelectOption & HTMLElement;
 
     // No-op if this item is not even in the list of tracked selected items.
     if (
       !this.lastSelectedOptionRecords.some(
-        ([option]) => option === requestingOptionEl,
+        ([option]) => option === requestingOptionEl
       )
     ) {
       return;
@@ -778,8 +813,8 @@ export abstract class Select extends selectBaseClass {
    * Dispatches the `input` and `change` events.
    */
   private dispatchInteractionEvents() {
-    this.dispatchEvent(new Event('input', {bubbles: true, composed: true}));
-    this.dispatchEvent(new Event('change', {bubbles: true}));
+    this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+    this.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
   private getErrorText() {
