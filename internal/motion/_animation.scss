@@ -7,6 +7,9 @@ $standard-easing: cubic-bezier(0.4, 0, 0.2, 1);
 $acceleration-easing: cubic-bezier(0.4, 0, 1, 1);
 $deceleration-easing: cubic-bezier(0, 0, 0.2, 1);
 $sharp-easing: cubic-bezier(0.4, 0, 0.6, 1);
+// material-web/internal/motion/animation.ts
+$emphasized: cubic-bezier(0.3, 0, 0, 1);
+$emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
 
 @function standard($name, $duration, $delay: null) {
   @return _animation($name, $duration, $standard-easing, $delay);
@@ -22,6 +25,14 @@ $sharp-easing: cubic-bezier(0.4, 0, 0.6, 1);
 
 @function sharp($name, $duration, $delay: null) {
   @return _animation($name, $duration, $sharp-easing, $delay);
+}
+
+@function emphasized($name, $duration, $delay: null) {
+  @return _animation($name, $duration, $emphasized, $delay);
+}
+
+@function emphasized-accelerate($name, $duration, $delay: null) {
+  @return _animation($name, $duration, $emphasized-accelerate, $delay);
 }
 
 @function _animation($name, $duration, $easing, $delay) {

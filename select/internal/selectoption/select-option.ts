@@ -7,21 +7,22 @@
 import '../../../focus/md-focus-ring.js';
 import '../../../labs/item/item.js';
 import '../../../ripple/ripple.js';
+import '~icons/ph/check-bold';
 
-import {html, LitElement, nothing} from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import {
   property,
   query,
   queryAssignedElements,
   queryAssignedNodes,
 } from 'lit/decorators.js';
-import {ClassInfo, classMap} from 'lit/directives/class-map.js';
+import { ClassInfo, classMap } from 'lit/directives/class-map.js';
 
-import {ARIAMixinStrict} from '../../../internal/aria/aria.js';
-import {requestUpdateOnAriaChange} from '../../../internal/aria/delegate.js';
-import {MenuItem} from '../../../menu/internal/controllers/menuItemController.js';
+import { ARIAMixinStrict } from '../../../internal/aria/aria.js';
+import { requestUpdateOnAriaChange } from '../../../internal/aria/delegate.js';
+import { MenuItem } from '../../../menu/internal/controllers/menuItemController.js';
 
-import {SelectOptionController} from './selectOptionController.js';
+import { SelectOptionController } from './selectOptionController.js';
 
 /**
  * The interface specific to a Select Option
@@ -72,18 +73,18 @@ export class SelectOptionEl extends LitElement implements SelectOption {
   /**
    * Disables the item and makes it non-selectable and non-interactive.
    */
-  @property({type: Boolean, reflect: true}) disabled = false;
+  @property({ type: Boolean, reflect: true }) disabled = false;
 
   /**
    * READONLY: self-identifies as a menu item and sets its identifying attribute
    */
-  @property({type: Boolean, attribute: 'md-menu-item', reflect: true})
+  @property({ type: Boolean, attribute: 'md-menu-item', reflect: true })
   isMenuItem = true;
 
   /**
    * Sets the item in the selected visual state when a submenu is opened.
    */
-  @property({type: Boolean}) selected = false;
+  @property({ type: Boolean }) selected = false;
   /**
    * Form value of the option.
    */
@@ -91,11 +92,11 @@ export class SelectOptionEl extends LitElement implements SelectOption {
 
   @query('.list-item') protected readonly listItemRoot!: HTMLElement | null;
 
-  @queryAssignedElements({slot: 'headline'})
+  @queryAssignedElements({ slot: 'headline' })
   protected readonly headlineElements!: HTMLElement[];
-  @queryAssignedElements({slot: 'supporting-text'})
+  @queryAssignedElements({ slot: 'supporting-text' })
   protected readonly supportingTextElements!: HTMLElement[];
-  @queryAssignedNodes({slot: ''})
+  @queryAssignedNodes({ slot: '' })
   protected readonly defaultElements!: Element[];
 
   type = 'option' as const;
@@ -108,7 +109,7 @@ export class SelectOptionEl extends LitElement implements SelectOption {
     return this.selectOptionController.typeaheadText;
   }
 
-  @property({attribute: 'typeahead-text'})
+  @property({ attribute: 'typeahead-text' })
   set typeaheadText(text: string) {
     this.selectOptionController.setTypeaheadText(text);
   }
@@ -121,7 +122,7 @@ export class SelectOptionEl extends LitElement implements SelectOption {
     return this.selectOptionController.displayText;
   }
 
-  @property({attribute: 'display-text'})
+  @property({ attribute: 'display-text' })
   set displayText(text: string) {
     this.selectOptionController.setDisplayText(text);
   }
@@ -146,7 +147,9 @@ export class SelectOptionEl extends LitElement implements SelectOption {
           ${this.renderRipple()} ${this.renderFocusRing()}
         </div>
         <slot name="start" slot="start"></slot>
-        <slot name="end" slot="end"></slot>
+        <slot name="end" slot="end">
+          <icon-ph-check-bold class="option-icon-end" />
+        </slot>
         ${this.renderBody()}
       </md-item>
     `);
@@ -171,8 +174,9 @@ export class SelectOptionEl extends LitElement implements SelectOption {
         class="list-item ${classMap(this.getRenderClasses())}"
         @click=${this.selectOptionController.onClick}
         @keydown=${this.selectOptionController.onKeydown}
-        >${content}</li
       >
+        ${content}
+      </li>
     `;
   }
 
@@ -183,7 +187,8 @@ export class SelectOptionEl extends LitElement implements SelectOption {
     return html` <md-ripple
       part="ripple"
       for="item"
-      ?disabled=${this.disabled}></md-ripple>`;
+      ?disabled=${this.disabled}
+    ></md-ripple>`;
   }
 
   /**
@@ -193,7 +198,8 @@ export class SelectOptionEl extends LitElement implements SelectOption {
     return html` <md-focus-ring
       part="focus-ring"
       for="item"
-      inward></md-focus-ring>`;
+      inward
+    ></md-focus-ring>`;
   }
 
   /**
@@ -201,8 +207,8 @@ export class SelectOptionEl extends LitElement implements SelectOption {
    */
   protected getRenderClasses(): ClassInfo {
     return {
-      'disabled': this.disabled,
-      'selected': this.selected,
+      disabled: this.disabled,
+      selected: this.selected,
     };
   }
 
@@ -217,7 +223,8 @@ export class SelectOptionEl extends LitElement implements SelectOption {
       <slot name="supporting-text" slot="supporting-text"></slot>
       <slot
         name="trailing-supporting-text"
-        slot="trailing-supporting-text"></slot>
+        slot="trailing-supporting-text"
+      ></slot>
     `;
   }
 

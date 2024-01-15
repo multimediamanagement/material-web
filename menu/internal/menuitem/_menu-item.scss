@@ -176,6 +176,10 @@
     background-color: map.get($tokens, 'selected-container-color');
   }
 
+  .list-item:not(.selected) [slot='end'] {
+    display: none;
+  }
+
   .selected:not(.disabled) ::slotted(*) {
     color: map.get($tokens, 'selected-label-text-color');
   }

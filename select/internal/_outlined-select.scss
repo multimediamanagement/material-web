@@ -12,6 +12,7 @@
 @use '../../field/outlined-field';
 @use '../../tokens';
 // go/keep-sorted end
+@use '../../internal/motion/animation';
 
 @mixin theme($tokens) {
   $supported-tokens: list.join(
@@ -185,5 +186,11 @@
     font-size: var(--_text-field-trailing-icon-size);
     height: var(--_text-field-trailing-icon-size);
     width: var(--_text-field-trailing-icon-size);
+    transition: animation.emphasized(transform, 150ms);
+  }
+
+  .select.open .icon.trailing {
+    transform: rotate(180deg);
+    transition: animation.emphasized(transform, 500ms);
   }
 }

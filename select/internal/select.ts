@@ -363,6 +363,13 @@ export abstract class Select extends selectBaseClass {
   }
 
   protected override render() {
+    requestAnimationFrame(() => {
+      // We need to set the width of the field to the width of the select to support
+      // truncation. We can't do this in `firstUpdated()` because the menu is not
+      const width = window.getComputedStyle(this).width;
+      this.style.setProperty('--field-calculated-width', width);
+    });
+
     return html`
       <span
         class="select ${classMap(this.getRenderClasses())}"
@@ -512,7 +519,7 @@ export abstract class Select extends selectBaseClass {
         anchor="field"
         style=${styleMap({
           '--__menu-min-width': `${width}`,
-          '--__menu-max-width': this.clampMenuWidth ? `${width}px` : undefined,
+          '--__menu-max-width': this.clampMenuWidth ? width : undefined,
         })}
         .open=${this.open}
         .quick=${this.quick}
