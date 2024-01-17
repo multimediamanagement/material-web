@@ -90,6 +90,12 @@ export class SelectOptionEl extends LitElement implements SelectOption {
    */
   @property() value = '';
 
+  /**
+   * Only show end slot, when this item is selected.
+   */
+  @property({ type: Boolean, attribute: 'select-only-end' })
+  selectOnlyEnd?: boolean;
+
   @query('.list-item') protected readonly listItemRoot!: HTMLElement | null;
 
   @queryAssignedElements({ slot: 'headline' })
@@ -209,6 +215,7 @@ export class SelectOptionEl extends LitElement implements SelectOption {
     return {
       disabled: this.disabled,
       selected: this.selected,
+      'select-only-end': this.selectOnlyEnd ?? true,
     };
   }
 

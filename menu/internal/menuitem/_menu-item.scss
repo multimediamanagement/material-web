@@ -176,7 +176,7 @@
     background-color: map.get($tokens, 'selected-container-color');
   }
 
-  .list-item:not(.selected) [slot='end'] {
+  .list-item.select-only-end:not(.selected) [slot='end'] {
     display: none;
   }
 
