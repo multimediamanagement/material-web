@@ -69,11 +69,11 @@
     margin: auto;
     max-height: min(560px, calc(100% - 48px));
     max-width: min(560px, calc(100% - 48px));
-    min-height: 140px;
-    min-width: 280px;
+    min-height: var(--md-dialog-height, 140px);
+    min-width: var(--md-dialog-width, 280px);
     position: fixed;
-    height: fit-content;
-    width: fit-content;
+    height: var(--md-dialog-height, fit-content);
+    width: var(--md-dialog-width, fit-content);
   }
 
   dialog {
@@ -106,7 +106,7 @@
     background: map.get($md-sys-color, 'scrim');
     display: none;
     inset: 0;
-    opacity: 32%;
+    opacity: var(--md-dialog-scrim-opacity, 32%);
     pointer-events: none;
     position: fixed;
     z-index: 1;
@@ -219,7 +219,7 @@
 
   slot[name='content']::slotted(*) {
     box-sizing: border-box;
-    padding: 24px;
+    padding: var(--md-dialog-content-padding, 24px);
   }
 
   // Anchors are used with an IntersectionObserver to determine when the content
