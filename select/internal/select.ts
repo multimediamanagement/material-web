@@ -88,6 +88,9 @@ export abstract class Select extends selectBaseClass {
     delegatesFocus: true,
   };
 
+  @property({ type: Boolean, attribute: 'no-deselect' })
+  noDeselect = false;
+
   /**
    * Opens the menu synchronously with no animation.
    */
@@ -738,7 +741,7 @@ export abstract class Select extends selectBaseClass {
    */
   private selectItem(item: SelectOption) {
     this.lastSelectedOptionRecords.forEach(([option]) => {
-      if (item !== option) {
+      if (item.value !== option.value) {
         option.selected = false;
       }
     });
@@ -779,6 +782,7 @@ export abstract class Select extends selectBaseClass {
 
     // No-op if this item is not even in the list of tracked selected items.
     if (
+      this.noDeselect &&
       !this.lastSelectedOptionRecords.some(
         ([option]) => option === requestingOptionEl
       )
