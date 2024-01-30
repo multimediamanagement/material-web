@@ -553,7 +553,7 @@ export abstract class TextField extends textFieldBaseClass {
   private renderField() {
     return staticHtml`<${this.fieldTag}
       class="field"
-      count=${this.value.length}
+      count=${this.value?.length ?? 0}
       ?disabled=${this.disabled}
       ?error=${this.hasError}
       error-text=${this.getErrorText()}
@@ -762,7 +762,7 @@ export abstract class TextField extends textFieldBaseClass {
   declare name: string;
 
   override [getFormValue]() {
-    return this.value;
+    return this.value ?? '';
   }
 
   override formResetCallback() {
