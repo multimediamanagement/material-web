@@ -16,9 +16,10 @@
   :host {
     display: inline-flex;
     resize: both;
+    height: fit-content;
   }
 
-  :host(:not([type='textarea'])) {
+  :host(:not([type='textarea'])) .container-overflow {
     height: var(--mmm-field-height, 4rem);
   }
 
