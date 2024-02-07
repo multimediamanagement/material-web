@@ -17,7 +17,6 @@
       padding-inline-start: var(--_supporting-text-leading-space);
       padding-inline-end: var(--_supporting-text-trailing-space);
       padding-top: var(--_supporting-text-top-space);
-      max-height: var(--_supporting-text-line-height);
 
       transform: translateY(-0.5rem);
       opacity: 0;
@@ -26,7 +25,7 @@
 
     .supporting-text-container {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 0.25rem;
     }
 
