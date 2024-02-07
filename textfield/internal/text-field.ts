@@ -567,6 +567,7 @@ export abstract class TextField extends textFieldBaseClass {
       ?required=${this.required}
       ?resizable=${this.type === 'textarea'}
       supporting-text=${this.supportingText}
+      type=${this.type}
     >
       ${this.renderLeadingIcon()}
       ${this.renderInputOrTextarea()}
@@ -761,7 +762,7 @@ export abstract class TextField extends textFieldBaseClass {
   declare disabled: boolean;
   declare name: string;
 
-  override [getFormValue]() {
+  override[getFormValue]() {
     return this.value ?? '';
   }
 

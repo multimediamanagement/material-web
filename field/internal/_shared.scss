@@ -18,6 +18,10 @@
     resize: both;
   }
 
+  :host(:not([type='textarea'])) {
+    height: var(--mmm-field-height, 4rem);
+  }
+
   .field {
     display: flex;
     flex: 1;
@@ -30,6 +34,7 @@
 
     .container-overflow {
       background-color: var(--md-field-background-color, transparent);
+      min-height: 4rem;
     }
 
     &.error .container-overflow {
