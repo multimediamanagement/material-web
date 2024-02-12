@@ -23,6 +23,13 @@
     height: var(--mmm-field-height, 4rem);
   }
 
+  :host([type='textarea']) .label-wrapper {
+    // fix label position for text-areas
+    display: flex;
+    align-items: var(--mmm-field-label-align-items, self-start);
+    margin-top: var(--mmm-field-label-top-space, 1.25rem);
+  }
+
   .field {
     display: flex;
     flex: 1;
