@@ -151,7 +151,7 @@ $_checkmark-bottom-left: 7px, -14px;
       display: none;
       position: absolute;
       inset: 0;
-      background-color: #0066b30d;
+      background-color: var(--mmm-state-default-elements-hover, #0066b30d);
     }
   }
 
