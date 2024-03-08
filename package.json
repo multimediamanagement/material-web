@@ -78,6 +78,11 @@
         "build:ts"
       ]
     },
+    "build:lib": {
+      "dependencies": [
+        "build:ts"
+      ]
+    },
     "build:ts": {
       "command": "tsc --pretty",
       "files": [
