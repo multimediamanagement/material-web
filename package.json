@@ -24,6 +24,7 @@
   "homepage": "https://github.com/material-components/material-web#readme",
   "scripts": {
     "build": "wireit",
+    "build:lib": "wireit",
     "build:ts": "wireit",
     "build:css-to-ts": "wireit",
     "build:sass": "wireit",

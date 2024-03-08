@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "../node_modules/@material/web/",
+    "outDir": "../..node_modules/@material/web/",
     "allowUnreachableCode": false,
     "baseUrl": ".",
     "declaration": true,
@@ -18,14 +18,23 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUnusedLocals": true,
     "paths": {
-      "@material/web/*": ["./*"]
+      "@material/web/*": [
+        "./*"
+      ]
     },
     "sourceMap": true,
     "inlineSources": true,
     "strict": true,
     "strictNullChecks": false,
     "target": "es2020",
-    "types": ["lit", "jasmine"]
+    "types": [
+      "lit",
+      "jasmine"
+    ]
   },
-  "exclude": ["catalog", "**/demo", "scripts/"]
+  "exclude": [
+    "catalog",
+    "**/demo",
+    "scripts/"
+  ]
 }
