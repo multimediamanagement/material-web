@@ -42,7 +42,7 @@
 
     .container-overflow {
       background-color: var(--md-field-background-color, transparent);
-      min-height: 4rem;
+      height: var(--mmm-field-min-height, 4rem);
     }
 
     &.error .container-overflow {
