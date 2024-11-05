@@ -84,7 +84,7 @@
       ]
     },
     "build:ts": {
-      "command": "tsc --pretty",
+      "command": "tsc --pretty --project tsconfig.json",
       "files": [
         "tsconfig.json",
         "**/*.ts",
