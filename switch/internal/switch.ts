@@ -218,14 +218,14 @@ export class Switch extends switchBaseClass {
     this.selected = state === 'true';
   }
 
-  [createValidator]() {
+  override [createValidator]() {
     return new CheckboxValidator(() => ({
       checked: this.selected,
       required: this.required,
     }));
   }
 
-  [getValidityAnchor]() {
+  override [getValidityAnchor]() {
     return this.input;
   }
 }

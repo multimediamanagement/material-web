@@ -189,7 +189,7 @@ export class Radio extends radioBaseClass {
     this.checked = state === 'true';
   }
 
-  [createValidator]() {
+  override [createValidator]() {
     return new RadioValidator(() => {
       if (!this.selectionController) {
         // Validation runs on superclass construction, so selection controller
@@ -201,7 +201,7 @@ export class Radio extends radioBaseClass {
     });
   }
 
-  [getValidityAnchor]() {
+  override [getValidityAnchor]() {
     return this.container;
   }
 }
