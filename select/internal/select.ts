@@ -7,12 +7,7 @@
 import '../../menu/menu.js';
 
 import { html, isServer, LitElement, nothing, PropertyValues } from 'lit';
-import {
-  property,
-  query,
-  queryAssignedElements,
-  state,
-} from 'lit/decorators.js';
+import { property, query, queryAssignedElements, state } from 'lit/decorators.js';
 import { ClassInfo, classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { html as staticHtml, StaticValue } from 'lit/static-html.js';
@@ -27,40 +22,23 @@ import {
   mixinConstraintValidation,
 } from '../../labs/behaviors/constraint-validation.js';
 import { mixinElementInternals } from '../../labs/behaviors/element-internals.js';
-import {
-  getFormValue,
-  mixinFormAssociated,
-} from '../../labs/behaviors/form-associated.js';
-import {
-  mixinOnReportValidity,
-  onReportValidity,
-} from '../../labs/behaviors/on-report-validity.js';
+import { getFormValue, mixinFormAssociated } from '../../labs/behaviors/form-associated.js';
+import { mixinOnReportValidity, onReportValidity } from '../../labs/behaviors/on-report-validity.js';
 import { SelectValidator } from '../../labs/behaviors/validators/select-validator.js';
 import { getActiveItem } from '../../list/internal/list-navigation-helpers.js';
-import {
-  CloseMenuEvent,
-  isElementInSubtree,
-  isSelectableKey,
-} from '../../menu/internal/controllers/shared.js';
+import { CloseMenuEvent, isElementInSubtree, isSelectableKey } from '../../menu/internal/controllers/shared.js';
 import { TYPEAHEAD_RECORD } from '../../menu/internal/controllers/typeaheadController.js';
-import {
-  DEFAULT_TYPEAHEAD_BUFFER_TIME,
-  Menu,
-} from '../../menu/internal/menu.js';
+import { DEFAULT_TYPEAHEAD_BUFFER_TIME, Menu } from '../../menu/internal/menu.js';
+
 import { SelectOption } from './selectoption/select-option.js';
-import {
-  createRequestDeselectionEvent,
-  createRequestSelectionEvent,
-} from './selectoption/selectOptionController.js';
+import { createRequestDeselectionEvent, createRequestSelectionEvent } from './selectoption/selectOptionController.js';
 import { getSelectedItems, SelectOptionRecord } from './shared.js';
 
 const VALUE = Symbol('value');
 
 // Separate variable needed for closure.
 const selectBaseClass = mixinOnReportValidity(
-  mixinConstraintValidation(
-    mixinFormAssociated(mixinElementInternals(LitElement))
-  )
+  mixinConstraintValidation(mixinFormAssociated(mixinElementInternals(LitElement)))
 );
 
 /**
@@ -291,9 +269,7 @@ export abstract class Select extends selectBaseClass {
    * value.
    */
   select(value: string) {
-    const optionToSelect = this.options.find(
-      (option) => option.value === value
-    );
+    const optionToSelect = this.options.find((option) => option.value === value);
     if (optionToSelect) {
       this.selectItem(optionToSelect);
     }
@@ -374,10 +350,7 @@ export abstract class Select extends selectBaseClass {
     });
 
     return html`
-      <span
-        class="select ${classMap(this.getRenderClasses())}"
-        @focusout=${this.handleFocusout}
-      >
+      <span class="select ${classMap(this.getRenderClasses())}" @focusout=${this.handleFocusout}>
         ${this.renderField()} ${this.renderMenu()}
       </span>
     `;
@@ -392,11 +365,7 @@ export abstract class Select extends selectBaseClass {
 
     // Case for when the DOM is streaming, there are no children, and a child
     // has [selected] set on it, we need to wait for DOM to render something.
-    if (
-      !this.lastSelectedOptionRecords.length &&
-      !isServer &&
-      !this.options.length
-    ) {
+    if (!this.lastSelectedOptionRecords.length && !isServer && !this.options.length) {
       setTimeout(() => {
         this.updateValueAndDisplayText();
       });
@@ -424,7 +393,7 @@ export abstract class Select extends selectBaseClass {
           tabindex=${this.disabled ? '-1' : '0'}
           aria-label=${(this as ARIAMixinStrict).ariaLabel || nothing}
           aria-describedby="description"
-          aria-expanded=${this.open ? 'true' : nothing}
+          aria-expanded=${this.open ? 'true' : 'false'}
           aria-controls="listbox"
           class="field"
           label=${this.label}
@@ -446,12 +415,7 @@ export abstract class Select extends selectBaseClass {
   }
 
   private renderFieldContent() {
-    return [
-      this.renderLeadingIcon(),
-      this.renderLabel(),
-      this.renderTrailingIcon(),
-      this.renderSupportingIcon(),
-    ];
+    return [this.renderLeadingIcon(), this.renderLabel(), this.renderTrailingIcon(), this.renderSupportingIcon()];
   }
 
   private renderLeadingIcon() {
@@ -467,18 +431,8 @@ export abstract class Select extends selectBaseClass {
       <span class="icon trailing" slot="end">
         <slot name="trailing-icon" @slotchange=${this.handleIconChange}>
           <svg height="5" viewBox="7 10 10 5" focusable="false">
-            <polygon
-              class="down"
-              stroke="none"
-              fill-rule="evenodd"
-              points="7 10 12 15 17 10"
-            ></polygon>
-            <polygon
-              class="up"
-              stroke="none"
-              fill-rule="evenodd"
-              points="7 15 12 10 17 15"
-            ></polygon>
+            <polygon class="down" stroke="none" fill-rule="evenodd" points="7 10 12 15 17 10"></polygon>
+            <polygon class="up" stroke="none" fill-rule="evenodd" points="7 15 12 10 17 15"></polygon>
           </svg>
         </slot>
       </span>
@@ -488,10 +442,7 @@ export abstract class Select extends selectBaseClass {
   private renderSupportingIcon() {
     return html`
       <span class="icon supporting" slot="supporting-icon">
-        <slot
-          name="supporting-icon"
-          @slotchange=${this.handleIconChange}
-        ></slot>
+        <slot name="supporting-icon" @slotchange=${this.handleIconChange}></slot>
       </span>
     `;
   }
@@ -504,10 +455,7 @@ export abstract class Select extends selectBaseClass {
 
   private renderMenu() {
     const ariaLabel = this.label || (this as ARIAMixinStrict).ariaLabel;
-    const width =
-      this.fieldEl && getComputedStyle
-        ? getComputedStyle(this.fieldEl).width
-        : `${this.selectWidth}px`;
+    const width = this.fieldEl && getComputedStyle ? getComputedStyle(this.fieldEl).width : `${this.selectWidth}px`;
 
     return html`<div class="menu-wrapper">
       <md-menu
@@ -557,10 +505,7 @@ export abstract class Select extends selectBaseClass {
     }
 
     const typeaheadController = this.menu.typeaheadController;
-    const isOpenKey =
-      event.code === 'Space' ||
-      event.code === 'ArrowDown' ||
-      event.code === 'Enter';
+    const isOpenKey = event.code === 'Space' || event.code === 'ArrowDown' || event.code === 'Enter';
 
     // Do not open if currently typing ahead because the user may be typing the
     // spacebar to match a word with a space
@@ -585,9 +530,7 @@ export abstract class Select extends selectBaseClass {
       }
 
       this.labelEl?.setAttribute?.('aria-live', 'polite');
-      const hasChanged = this.selectItem(
-        lastActiveRecord[TYPEAHEAD_RECORD.ITEM] as SelectOption
-      );
+      const hasChanged = this.selectItem(lastActiveRecord[TYPEAHEAD_RECORD.ITEM] as SelectOption);
 
       if (hasChanged) {
         this.dispatchInteractionEvents();
@@ -656,8 +599,7 @@ export abstract class Select extends selectBaseClass {
 
     if (selectedOptions.length) {
       const [firstSelectedOption] = selectedOptions[0];
-      hasSelectedOptionChanged =
-        this.lastSelectedOption !== firstSelectedOption;
+      hasSelectedOptionChanged = this.lastSelectedOption !== firstSelectedOption;
       this.lastSelectedOption = firstSelectedOption;
       this[VALUE] = firstSelectedOption.value;
       this.displayText = firstSelectedOption.displayText;
@@ -754,17 +696,11 @@ export abstract class Select extends selectBaseClass {
    * Handles updating selection when an option element requests selection via
    * property / attribute change.
    */
-  private handleRequestSelection(
-    event: ReturnType<typeof createRequestSelectionEvent>
-  ) {
+  private handleRequestSelection(event: ReturnType<typeof createRequestSelectionEvent>) {
     const requestingOptionEl = event.target as SelectOption & HTMLElement;
 
     // No-op if this item is already selected.
-    if (
-      this.lastSelectedOptionRecords.some(
-        ([option]) => option === requestingOptionEl
-      )
-    ) {
+    if (this.lastSelectedOptionRecords.some(([option]) => option === requestingOptionEl)) {
       return;
     }
 
@@ -775,18 +711,11 @@ export abstract class Select extends selectBaseClass {
    * Handles updating selection when an option element requests deselection via
    * property / attribute change.
    */
-  private handleRequestDeselection(
-    event: ReturnType<typeof createRequestDeselectionEvent>
-  ) {
+  private handleRequestDeselection(event: ReturnType<typeof createRequestDeselectionEvent>) {
     const requestingOptionEl = event.target as SelectOption & HTMLElement;
 
     // No-op if this item is not even in the list of tracked selected items.
-    if (
-      this.noDeselect &&
-      !this.lastSelectedOptionRecords.some(
-        ([option]) => option === requestingOptionEl
-      )
-    ) {
+    if (this.noDeselect && !this.lastSelectedOptionRecords.some(([option]) => option === requestingOptionEl)) {
       return;
     }
 
@@ -804,10 +733,7 @@ export abstract class Select extends selectBaseClass {
 
       // User has set `.selectedIndex` directly, but internals have not yet
       // booted up.
-    } else if (
-      this.lastUserSetSelectedIndex !== null &&
-      !this.lastSelectedOptionRecords.length
-    ) {
+    } else if (this.lastUserSetSelectedIndex !== null && !this.lastSelectedOptionRecords.length) {
       this.selectIndex(this.lastUserSetSelectedIndex);
 
       // Regular boot up!
