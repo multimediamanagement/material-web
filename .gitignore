@@ -27,3 +27,4 @@ catalog/*.tsbuildinfo
 catalog/stories/*/
 !catalog/stories/components/
 !catalog/src/types/**/*.d.ts
+.DS_Store
